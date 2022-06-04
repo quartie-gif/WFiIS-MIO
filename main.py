@@ -57,8 +57,11 @@ def plot_image(mit_train):
 
     for i in range(np_time.shape[0]):
         ax = plt.subplot(2, 5, i+1)
+        # print(rnd[i])
+        # print(mit_train[rnd[i]])
         ax.plot(mit_train[rnd[i]])
         # ax.set_title(MIT_OUTCOME[])
+    # plt.plot(np.arange(len(mit_train)), mit_train)
 
     # plt.show()
     plt.savefig("out.png")
