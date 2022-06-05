@@ -5,10 +5,10 @@ from keras.datasets import mnist
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def test(
         x_train,
         x_test):
-
 
     encoding_dim = 32
 
@@ -26,8 +26,6 @@ def test(
     decoder = keras.Model(encoded_input, decoder_layer(encoded_input))
 
     autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
-
-
 
     # x_train = x_train.astype('float32')/255
     # x_test = x_test.astype('float32')/255
@@ -47,14 +45,13 @@ def test(
     encoded_imgs = encoder.predict(x_test)
     decoded_imgs = decoder.predict(encoded_imgs)
 
-
     n = 10  # How many digits we will display
     plt.figure(figsize=(n*3, 4))
     for i in range(n):
         # Display original
         ax = plt.subplot(2, n, i + 1)
         x_axis = range(len(np.array(x_test[i])))
-        plt.plot(x_axis, np.array(x_test[i]).reshape(87554,1))
+        plt.plot(x_axis, np.array(x_test[i]))
         # ax.get_xaxis().set_visible(False)
         # ax.get_yaxis().set_visible(False)
 
@@ -72,5 +69,5 @@ def test(
         # ax.get_xaxis().set_visible(False)
         # ax.get_yaxis().set_visible(False)
     plt.savefig("asdasd.png")
-    y_axis = np.array(x_test[i]).reshape(87554)
+    y_axis=np.array(x_test)
     return x_axis, y_axis
