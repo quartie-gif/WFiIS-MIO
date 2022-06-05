@@ -44,6 +44,7 @@ def main():
 
     # # Visualize results]
     n = 5
+    # Choose random inputs to visualize
     indices = [random.randint(0, len(x_test)) for _ in range(n)]
     plt.figure(figsize=(n * 3, 4))
     for vis_i, i in enumerate(indices):
@@ -59,7 +60,8 @@ def main():
         ax = plt.subplot(3, n, vis_i + 1 + 2 * n)
         plt.plot(range(len(decoded_ecg[i])), decoded_ecg[i])
 
-    plt.show()
+    plt.tight_layout()
+    plt.savefig('test.png')
 
 
 if __name__ == '__main__':
