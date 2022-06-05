@@ -42,7 +42,7 @@ def main():
     encoded_ecg = model.encoder.predict(x_test)
     decoded_ecg = model.decoder.predict(encoded_ecg)
 
-    # # Visualize results]
+    # # Visualize results
     n = 5
     # Choose random inputs to visualize
     indices = [random.randint(0, len(x_test)) for _ in range(n)]
