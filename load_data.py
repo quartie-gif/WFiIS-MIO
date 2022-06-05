@@ -10,9 +10,3 @@ def load_ecg_data() -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray):
     return mitbih_train, mitbih_test, ptbdb_normal, ptbdb_abnormal
 
 
-def test() -> None:
-    load_data()
-
-
-if __name__ == '__main__':
-    test()

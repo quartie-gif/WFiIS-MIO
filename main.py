@@ -4,6 +4,7 @@ import keras
 import numpy as np
 from keras.datasets import mnist
 import matplotlib.pyplot as plt
+from ann_visualizer.visualize import ann_viz;
 
 from EcgAutoencoder import EcgAutoencoder
 from load_data import load_ecg_data
@@ -33,11 +34,14 @@ def main():
     )
 
     # # Fit model
-    model.autoencoder.fit(x_train, x_train,
+    history = model.autoencoder.fit(x_train, x_train,
                           epochs=12,
                           batch_size=256,
                           shuffle=True,
                           validation_data=(x_test, x_test))
+    # ann_viz(model, title="Autoencoder")
+    model.build(input_shape=(None, input_size))
+    print(model.summary())
 
     encoded_ecg = model.encoder.predict(x_test)
     decoded_ecg = model.decoder.predict(encoded_ecg)
@@ -61,7 +65,21 @@ def main():
         plt.plot(range(len(decoded_ecg[i])), decoded_ecg[i])
 
     plt.tight_layout()
-    plt.savefig('test.png')
+    plt.savefig('results.png'
+                , dpi=300
+                , bbox_inches='tight')
+
+    # summarize history for accuracy
+    plt.clf()
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
+    plt.title('model accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig('accuracy.png'
+                , dpi=300
+                , bbox_inches='tight')
 
 
 if __name__ == '__main__':

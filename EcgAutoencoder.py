@@ -50,7 +50,7 @@ class EcgAutoencoder(keras.Model):
         for layer in self.decoder_layers:
             tensor = layer(tensor)
         self.decoder = keras.Model(encoded_input, tensor)
-        self.autoencoder.compile(optimizer='adam', loss=loss)
+        self.autoencoder.compile(optimizer='adam', loss=loss, metrics=['accuracy'])
 
     def get_encoder(self):
         return self.encoder
