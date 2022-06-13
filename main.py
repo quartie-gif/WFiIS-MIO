@@ -4,7 +4,8 @@ import keras
 import numpy as np
 from keras.datasets import mnist
 import matplotlib.pyplot as plt
-from ann_visualizer.visualize import ann_viz;
+from ann_visualizer.visualize import ann_viz
+
 
 from EcgAutoencoder import EcgAutoencoder
 from load_data import load_ecg_data
@@ -18,9 +19,11 @@ def main():
 
     # # Initialize model
     input_size = x_train.shape[1]
-    layers = [(32, 'relu'),
-              (16, 'relu'),
-              (32, 'relu')]
+    layers = [(256, 'relu'),
+              (128, 'relu'),
+              (64, 'relu'),
+              (128, 'relu'),
+              (256, 'relu')]
     layer_sizes = [tup[0] for tup in layers]
     activations = [tup[1] for tup in layers]
     encoder_output_index = 1
@@ -33,15 +36,25 @@ def main():
         loss=loss
     )
 
+    # Early stopping callback
+    # Early stopping is a type of regularization to curb overfitting of the training data and requires that you monitor the performance of the model on training and a held validation datasets, each epoch.
+
+    # Once performance on the validation dataset starts to degrade, training can stop
+    callback = keras.callbacks.EarlyStopping(monitor='loss', patience=5)
+
+    batch_size = 16
+    steps_per_epoch = len(x_train)//batch_size
     # # Fit model
     history = model.autoencoder.fit(x_train, x_train,
-                          epochs=12,
-                          batch_size=256,
-                          shuffle=True,
-                          validation_data=(x_test, x_test))
+                                    epochs=50,
+                                    steps_per_epoch=steps_per_epoch,
+                                    batch_size=batch_size,
+                                    callbacks=[callback],
+                                    shuffle=True,
+                                    validation_data=(x_test, x_test))
     # ann_viz(model, title="Autoencoder")
     model.build(input_shape=(None, input_size))
-    print(model.summary())
+    # print(model.summary())
 
     encoded_ecg = model.encoder.predict(x_test)
     decoded_ecg = model.decoder.predict(encoded_ecg)
@@ -65,9 +78,7 @@ def main():
         plt.plot(range(len(decoded_ecg[i])), decoded_ecg[i])
 
     plt.tight_layout()
-    plt.savefig('results.png'
-                , dpi=300
-                , bbox_inches='tight')
+    plt.savefig('./images/results.png', dpi=300, bbox_inches='tight')
 
     # summarize history for accuracy
     plt.clf()
@@ -77,9 +88,7 @@ def main():
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig('accuracy.png'
-                , dpi=300
-                , bbox_inches='tight')
+    plt.savefig('./images/accuracy.png', dpi=300, bbox_inches='tight')
 
 
 if __name__ == '__main__':

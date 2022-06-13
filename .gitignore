@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # Avoid big csv data
-/dataset
+/dataset*
+*.csv
