@@ -18,7 +18,8 @@ def main():
 
     # # Initialize model
     input_size = x_train.shape[1]
-    layers = [(32, 'relu'),
+    layers = [(16, 'relu'), # rectified linear unit; f(x) = max(0, x)
+              (32, 'relu'),
               (16, 'relu'),
               (32, 'relu')]
     layer_sizes = [tup[0] for tup in layers]
@@ -35,7 +36,7 @@ def main():
 
     # # Fit model
     history = model.autoencoder.fit(x_train, x_train,
-                          epochs=12,
+                          epochs=60,
                           batch_size=256,
                           shuffle=True,
                           validation_data=(x_test, x_test))
@@ -54,15 +55,18 @@ def main():
     for vis_i, i in enumerate(indices):
         # Display original
         ax = plt.subplot(3, n, vis_i + 1)
-        plt.plot(range(len(x_test[i])), x_test[i])
+        plt.plot(range(len(x_test[i])), x_test[i], color = "#4D97B2")
+        plt.title("Original data")
 
         # Display encoded
         ax = plt.subplot(3, n, vis_i + 1 + n)
-        plt.plot(range(len(encoded_ecg[i])), encoded_ecg[i])
+        plt.plot(range(len(encoded_ecg[i])), encoded_ecg[i], color = "#B24D97")
+        plt.title("Encoded data")
 
         # Display reconstructed
         ax = plt.subplot(3, n, vis_i + 1 + 2 * n)
-        plt.plot(range(len(decoded_ecg[i])), decoded_ecg[i])
+        plt.plot(range(len(decoded_ecg[i])), decoded_ecg[i], color = "#97B24D")
+        plt.title("Decoded data")
 
     plt.tight_layout()
     plt.savefig('results.png'
@@ -77,6 +81,8 @@ def main():
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
+    plt.grid()
+    print("Compression={}".format(len(x_test[i])/len(encoded_ecg[i])))
     plt.savefig('accuracy.png'
                 , dpi=300
                 , bbox_inches='tight')

@@ -130,3 +130,11 @@ dmypy.json
 
 # Avoid big csv data
 /dataset
+/datasets
+
+# My notes
+/notes
+
+*.png
+accuracy.png
+results.png
