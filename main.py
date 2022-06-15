@@ -37,9 +37,7 @@ def main():
     )
 
     # Early stopping callback
-    # Early stopping is a type of regularization to curb overfitting of the training data and requires that you monitor the performance of the model on training and a held validation datasets, each epoch.
 
-    # Once performance on the validation dataset starts to degrade, training can stop
     callback = keras.callbacks.EarlyStopping(monitor='loss', patience=5)
 
     batch_size = 16
